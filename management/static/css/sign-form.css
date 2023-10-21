@@ -1,0 +1,160 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 999;
+}
+
+.header .logo img{
+    width: 20%;
+}
+
+.header .nav a {
+    position: relative;
+    font-size: 1.2rem;
+    color: var(--white-color);
+    margin-left: 40px;
+    font-weight: 600;
+}
+
+.nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: red;
+    border-radius: 5px;
+    bottom: -6px;
+    transform: scaleX(0);
+    transition: .5s;
+}
+
+.nav a:hover::after {
+    transform: scaleX(1);
+}
+
+section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url(../images/background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    padding: 80px 200px 0;
+    align-items: center;
+}
+
+section .content {
+    max-width: 600px;
+    color: var(--white-color);
+}
+
+.content h2 {
+    font-size: 3rem;
+    letter-spacing: 0.3rem;
+    color: blue;
+}
+
+.content p {
+    margin: 10px 0 40px;
+}
+
+.content a {
+    color: var(--white-color);
+    border: 2px solid blue;
+    font-weight: 500;
+    padding: 10px 40px;
+    border-radius: 40px;
+    transition:  .5s;
+}
+
+.login {
+    position: relative;
+    width: 440px;
+}
+
+.login h2 {
+    text-align: center;
+    color: blue;
+    font-size: 2rem;
+}
+
+.input-login {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    padding: 40px 0;
+}
+
+.input-login .input {
+    width: 100%;
+    height: 50px;
+    border: 2px solid blue;
+    border-radius: 40px;
+    background: transparent;
+    outline: none;
+}
+
+::placeholder {
+    color: var(--white-color);
+    font-size: 1.2rem;
+    padding: 0 20px;
+}
+
+.input-login i {
+    position: absolute;
+    top: 55px;
+    left: 400px;
+    font-size: 1.2rem;
+}
+
+.remember-forgot {
+    color: var(--white-color);
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    margin: 25px 0 15px;
+}
+
+.remember-forgot a {
+    color: var(--white-color);
+}
+
+.remember-forgot a:hover {
+    text-decoration: underline;
+}
+
+button {
+    width: 100%;
+    height: 50px;
+    border: 1px solid blue;
+    border-radius: 40px;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    transition: .5s;
+    background-color:blue;
+    color: var(--white-color);
+}
+
+.register-link {
+    display: flex;
+    justify-content: center;
+    color: var(--white-color);
+}
+
+.register-link a {
+    color: var(--white-color);
+    font-weight: 600;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
