@@ -13,14 +13,20 @@ views = Blueprint("views", __name__)
 @views.route("/", methods=["GET","POST"])
 @login_required
 def home():
-    if request.method == "POST":
-        note = request.form.get("note")
-        if len(note) < 1:
-            flash("Note sort:)",category="error")
-        else:
-            new_note = Note(data = note, user_id = current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash("Note added !",category="success")
-    messages = get_flashed_messages()
-    return render_template("index.html", user=current_user if current_user.is_authenticated else None)
+    return render_template("index.html")
+
+@views.route('/details')
+def shop_details():
+    return render_template('detail.html')
+
+@views.route('/cart')
+def shop_cart():
+    return render_template('cart.html')
+
+@views.route('/checkout')
+def shop_checkout():
+    return render_template('checkout.html')
+
+@views.route('/contact')
+def shop_contact():
+    return render_template('contact.html')
