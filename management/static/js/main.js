@@ -33,7 +33,7 @@
     });
 
 
-    // Vendor carousel
+    // Vendor carousel  
     $('.vendor-carousel').owlCarousel({
         loop: true,
         margin: 29,
