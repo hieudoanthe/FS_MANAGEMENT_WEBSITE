@@ -30,3 +30,7 @@ def shop_checkout():
 @views.route('/contact')
 def shop_contact():
     return render_template('contact.html')
+
+@views.route('/shop')
+def shop_ourShop():
+    return render_template('shop.html')
