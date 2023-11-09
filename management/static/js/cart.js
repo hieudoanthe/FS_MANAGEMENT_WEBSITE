@@ -1,35 +1,50 @@
 document.addEventListener('DOMContentLoaded', function () {
-            const addToCartButtons = document.querySelectorAll('.addToCart');
-            // console.log(addToCartButtons)
-            addToCartButtons.forEach(function (button) {
-                button.addEventListener('click', function (event) {
-                    // Tìm thông tin sản phẩm liên quan đến nút được nhấn
-                    const productCard = button.closest('.product-item');
-                    const productName = productCard.querySelector('h6').textContent;
-                    const productPrice = productCard.querySelector('.d-flex h6').textContent;
-                    const productImage = productCard.querySelector('img').getAttribute("src");
-                    // console.log(productImage)
-                    // Tạo một đối tượng sản phẩm
-                    const product = {
-                        name: productName,
-                        price: productPrice,
-                        image: productImage,
-                    };
+    const addToCartButtons = document.querySelectorAll('.addToCart');
 
-                    // Kiểm tra xem giỏ hàng đã có chưa
-                    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-                    // console.log(cart)
-                    // Thêm sản phẩm vào giỏ hàng
-                    cart.push(product);
+    addToCartButtons.forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            // Tìm thông tin sản phẩm liên quan đến nút được nhấn
+            const productCard = button.closest('.product-item');
+            const productName = productCard.querySelector('h6').textContent;
+            const productPrice = productCard.querySelector('.d-flex h6').textContent;
+            const productImage = productCard.querySelector('img').getAttribute("src");
 
-                    // Lưu lại giỏ hàng vào Local Storage
-                    localStorage.setItem("cart", JSON.stringify(cart));
-                    alert("The product has been added to cart");
-                });
-            });
+            // Tạo một đối tượng sản phẩm
+            const product = {
+                name: productName,
+                price: productPrice,
+                image: productImage,
+            };
+
+            // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+            if (isProductInCart(product)) {
+                alert("The product is already in your cart");
+            } else {
+                // Lấy giỏ hàng từ Local Storage
+                let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+                // Thêm sản phẩm vào giỏ hàng
+                cart.push(product);
+
+                // Lưu lại giỏ hàng vào Local Storage
+                localStorage.setItem("cart", JSON.stringify(cart));
+
+                alert("The product has been added to cart");
+            }
+        });
+    });
 });
-        
 
+// Hàm kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+function isProductInCart(product) {
+    // Lấy giỏ hàng từ Local Storage
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Kiểm tra xem sản phẩm có trong giỏ hàng hay không
+    return cart.some(item => item.name === product.name && item.price === product.price);
+}
+   
+// Xóa sản phẩm cart.html
 document.addEventListener('DOMContentLoaded', function () {
         const deleteCartButtons = document.querySelectorAll('.deleteCart');
         deleteCartButtons.forEach(function (button) {
@@ -96,6 +111,7 @@ function displayCartItems() {
                 <td class="align-middle"><button class="btn btn-sm btn-primary deleteCart"><i class="fa fa-times"></i></button></td>
             `;
             cartTable.appendChild(newRow);
+            cartTotal()
         });
     }
 }
@@ -103,3 +119,24 @@ function displayCartItems() {
 // Gọi hàm hiển thị giỏ hàng khi trang cart.html được tải
 displayCartItems();
 
+// Tính tổng sản phẩm
+function cartTotal() {
+    var cartItem = document.querySelectorAll('tbody tr')
+    var toTal = 0
+    // console.log(cartItem.length);
+    for (var i = 0; i < cartItem.length; i++){
+        // console.log(i);
+        var inputValue = cartItem[i].querySelector('input').value
+        var productPrice = parseFloat(cartItem[i].querySelector('td:nth-child(4)').textContent.replace("$", ""));
+
+        // console.log(inputValue);
+        // console.log(productPrice);
+        total = inputValue * productPrice;
+        // console.log(total)
+        toTal = toTal + total;
+        // console.log(toTal)
+    }
+    cartTotalP = document.querySelector('.mt-2 h5:nth-child(2)')
+    cartTotalP.innerHTML = toTal.toFixed(2);
+    console.log(cartTotalP)
+}

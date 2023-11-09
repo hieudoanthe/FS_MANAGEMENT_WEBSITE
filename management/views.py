@@ -24,6 +24,7 @@ def shop_cart():
     return render_template('cart.html')
 
 @views.route('/checkout')
+@login_required
 def shop_checkout():
     return render_template('checkout.html')
 
