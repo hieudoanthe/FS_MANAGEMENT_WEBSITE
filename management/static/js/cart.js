@@ -8,11 +8,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const productName = productCard.querySelector('h6').textContent;
             const productPrice = productCard.querySelector('.d-flex h6').textContent;
             const productImage = productCard.querySelector('img').getAttribute("src");
-
+            console.log(productPrice)
             // Tạo một đối tượng sản phẩm
             const product = {
                 name: productName,
-                price: productPrice,
+                price: parseFloat(productPrice.replace('$', '')), 
                 image: productImage,
             };
 
@@ -25,11 +25,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Thêm sản phẩm vào giỏ hàng
                 cart.push(product);
-
+                
                 // Lưu lại giỏ hàng vào Local Storage
                 localStorage.setItem("cart", JSON.stringify(cart));
 
                 alert("The product has been added to cart");
+                // console.log(localStorage)
             }
         });
     });
@@ -43,7 +44,7 @@ function isProductInCart(product) {
     // Kiểm tra xem sản phẩm có trong giỏ hàng hay không
     return cart.some(item => item.name === product.name && item.price === product.price);
 }
-   
+
 // Xóa sản phẩm cart.html
 document.addEventListener('DOMContentLoaded', function () {
         const deleteCartButtons = document.querySelectorAll('.deleteCart');
@@ -80,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function displayCartItems() {
     const cartTable = document.querySelector("tbody.align-middle");
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
+    
     if (cart.length === 0) {
         // Hiển thị thông báo nếu giỏ hàng rỗng
         cartTable.innerHTML = "<tr><td colspan='5'>Your cart is empty</td></tr>";
@@ -141,3 +142,33 @@ function cartTotal() {
     console.log(cartTotalP)
 }
 
+//
+
+document.addEventListener('DOMContentLoaded', function () {
+    const checkoutButton = document.querySelector('#checkoutButton');
+
+    checkoutButton.addEventListener('click', function () {
+        // ... (Kiểm tra người dùng đã đăng nhập chưa)
+
+        // Lấy thông tin sản phẩm từ Local Storage
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // Gửi thông tin sản phẩm lên máy chủ
+        fetch('/checkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ products: cart }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            // Chuyển hướng đến trang thanh toán sau khi lưu vào cơ sở dữ liệu
+            window.location.href = '/checkout';
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+});

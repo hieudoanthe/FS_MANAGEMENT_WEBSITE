@@ -8,9 +8,6 @@
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
 
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
-
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
@@ -209,6 +206,32 @@
                             <h5 class="font-weight-bold">$0.00</h5>
                         </div>
                         <button id="checkoutButton" class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const checkoutButton = document.querySelector('#checkoutButton');
+
+                                checkoutButton.addEventListener('click', function () {
+                                    // Kiểm tra xem người dùng đã đăng nhập hay chưa
+                                    const isUserLoggedIn = {% if not current_user.is_authenticated %} true {% else %} false {% endif %};
+
+                            if (!isUserLoggedIn) {
+                                // Hiển thị hộp thoại xác nhận trước khi chuyển hướng đến trang đăng nhập
+                                const confirmLogin = confirm("Bạn cần đăng nhập để tiếp tục. Bạn có muốn đăng nhập ngay không?");
+
+                                // Xử lý kết quả hộp thoại xác nhận
+                                if (confirmLogin) {
+                                    // Thêm 'next' vào URL để lưu trang hiện tại và chuyển hướng đến trang đăng nhập
+                                    const currentUrl = '/checkout';
+                                    window.location.href = '/login?next=' + encodeURIComponent(currentUrl);
+                                }
+                                // Người dùng chọn Hủy, không làm gì cả (giữ nguyên trang)
+                            } else {
+                                // Người dùng đã đăng nhập, chuyển hướng đến trang thanh toán
+                                window.location.href = '/checkout';
+                            }
+                                });
+                            });
+                        </script>
 
                     </div>
                 </div>

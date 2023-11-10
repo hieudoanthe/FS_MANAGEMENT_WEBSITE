@@ -1,7 +1,7 @@
 from re import template
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session, get_flashed_messages, jsonify
 from sqlalchemy.sql.expression import false
-from management.models import User, Note, Order
+from management.models import User, Note
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from management import db
