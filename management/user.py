@@ -8,24 +8,30 @@ from management import db
 
 user = Blueprint("user", __name__)
 
-@user.route("/login",methods=["GET", "POST"])
+@user.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-        user = User.query.filter_by(email = email).first()
+        user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
                 session.permanent = True
-                login_user(user,remember=True)
-                flash("Logged is success !",category="success")
-                return redirect(url_for("views.home"))
+                login_user(user, remember=True)
+                flash("Logged is success !", category="success")
+
+                # Chuyển hướng đến trang checkout.html nếu có session['checkout_redirect']
+                if 'checkout_redirect' in session:
+                    return redirect(session.pop('checkout_redirect'))
+                else:
+                    return redirect(url_for("views.home"))
             else:
-                flash("Password is wrong :)",category="error")
+                flash("Password is wrong :)", category="error")
         else:
-            flash("User doesn't exist !",category="error")
+            flash("User doesn't exist !", category="error")
+
     messages = get_flashed_messages()
-    return render_template("login.html", user = current_user)
+    return render_template("login.html", user=current_user)
 
 @user.route("/signup",methods=["GET", "POST"])
 def signup():
