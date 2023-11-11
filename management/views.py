@@ -19,9 +19,9 @@ def home():
 def shop_details():
     return render_template('detail.html')
 
-# @views.route('/cart')
-# def shop_cart():
-#     return render_template('cart.html')
+@views.route('/cart')
+def shop_cart():
+    return render_template('cart.html')
 
 @views.route('/checkout', methods=['GET', 'POST'])
 @login_required
@@ -29,21 +29,7 @@ def shop_checkout():
     products = Product.query.all()  # Lấy tất cả sản phẩm từ cơ sở dữ liệu
     return render_template('checkout.html', products=products)
 
-@views.route('/contact')
-def shop_contact():
-    return render_template('contact.html')
-
-@views.route('/shop')
-def shop_ourShop():
-    return render_template('shop.html')
-
-@views.route('/cart')
-def shop_cart():
-    # Lấy sản phẩm từ cơ sở dữ liệu để hiển thị trên giỏ hàng
-    products = Product.query.all()
-    return render_template('cart.html', products=products)
-
-@views.route('/cart/<int:product_id>', methods=['DELETE'])
+@views.route('/checkout/<int:product_id>', methods=['DELETE'])
 @login_required
 def remove_product_from_cart(product_id):
     try:
@@ -60,3 +46,13 @@ def remove_product_from_cart(product_id):
             return jsonify({"success": False, "message": "Không tìm thấy sản phẩm"})
     except Exception as e:
         return jsonify({"success": False, "message": str(e)})
+
+
+@views.route('/contact')
+def shop_contact():
+    return render_template('contact.html')
+
+@views.route('/shop')
+def shop_ourShop():
+    return render_template('shop.html')
+

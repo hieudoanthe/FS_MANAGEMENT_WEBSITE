@@ -317,9 +317,11 @@
                     <div class="card-body">
                         <h5 class="font-weight-medium mb-3">Products</h5>
                         {% for product in products %}
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between" id="product-{{ product.id }}">
                             <p>{{ product.name }}</p>
                             <p>${{ product.total_price }}</p>
+                            <button class="btn btn-sm btn-primary deleteCart" onclick="deleteProduct('{{ product.id }}')"><i
+                                    class="fa fa-times"></i></button>
                         </div>
                         {% endfor %}
                         <hr class="mt-0">
@@ -442,7 +444,32 @@
         <script src="lib/owlcarousel/owl.carousel.js"></script>
     <!-- Template Javascript -->
     <script src="../static/js/main.js"></script>
-    <script src="{{ url_for('static', filename='cart.js') }}"></script>
 </body>
+<script>
+    // Hàm xóa sản phẩm từ giỏ hàng và cơ sở dữ liệu
+    function deleteProduct(productId) {
+        const confirmDelete = confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?");
+
+        if (confirmDelete) {
+            // Gửi yêu cầu xóa sản phẩm từ cơ sở dữ liệu
+            fetch(`/checkout/${productId}`, {
+                method: 'DELETE',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+
+                    // Xóa sản phẩm khỏi giao diện
+                    const productElement = document.getElementById(`product-${productId}`);
+                    if (productElement) {
+                        productElement.remove();
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+    }
+</script>
 
 </html>

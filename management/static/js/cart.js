@@ -82,20 +82,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Lưu lại giỏ hàng mới vào Local Storage
     localStorage.setItem("cart", JSON.stringify(cart));
-
-    // Gửi yêu cầu đến máy chủ để xóa sản phẩm từ cơ sở dữ liệu
-    fetch(`/cart/${productID}`, {
-        method: 'DELETE',
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (!data.success) {
-            console.error("Không thể xóa sản phẩm từ cơ sở dữ liệu. Lỗi:", data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Lỗi khi gửi yêu cầu xóa sản phẩm từ cơ sở dữ liệu:', error);
-    });
 }
 
 
@@ -187,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             console.log('Success:', data);
             // Chuyển hướng đến trang thanh toán sau khi lưu vào cơ sở dữ liệu
-            window.location.href = '/checkout';
+            // window.location.href = '/checkout';
         })
         .catch((error) => {
             console.error('Error:', error);
