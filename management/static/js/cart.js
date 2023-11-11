@@ -52,30 +52,52 @@ document.addEventListener('DOMContentLoaded', function () {
             button.addEventListener('click', function (event) {
                 var cardDelete = button.closest('tr');
                 var productID = cardDelete.id; // Lấy ID của sản phẩm cần xóa
-
+                
                 // Gọi hàm xóa sản phẩm và truyền vào ID
                 removeProduct(productID);
 
                 // Xóa sản phẩm trên giao diện
                 cardDelete.remove();
+                cartTotal()
+        const cartTable = document.querySelector("tbody.align-middle");
+                let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                if (cart.length === 0) {
+                // Hiển thị thông báo nếu giỏ hàng rỗng
+                cartTable.innerHTML = "<tr><td colspan='5'>Your cart is empty</td></tr>";
+                }
             })
         })
     });
 
     // Hàm xóa sản phẩm từ giỏ hàng
     function removeProduct(productID) {
-        // Lấy vị trí của sản phẩm trong giỏ hàng dựa trên ID
-        const productIndex = parseInt(productID.split('-')[1]) - 1;
+    // Lấy vị trí của sản phẩm trong giỏ hàng dựa trên ID
+    const productIndex = parseInt(productID.split('-')[1]) - 1;
 
-        // Lấy giỏ hàng từ Local Storage
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    // Lấy giỏ hàng từ Local Storage
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        // Xóa sản phẩm khỏi giỏ hàng
-        cart.splice(productIndex, 1);
+    // Xóa sản phẩm khỏi giỏ hàng
+    cart.splice(productIndex, 1);
 
-        // Lưu lại giỏ hàng mới vào Local Storage
-        localStorage.setItem("cart", JSON.stringify(cart));
-    }
+    // Lưu lại giỏ hàng mới vào Local Storage
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    // Gửi yêu cầu đến máy chủ để xóa sản phẩm từ cơ sở dữ liệu
+    fetch(`/cart/${productID}`, {
+        method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            console.error("Không thể xóa sản phẩm từ cơ sở dữ liệu. Lỗi:", data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Lỗi khi gửi yêu cầu xóa sản phẩm từ cơ sở dữ liệu:', error);
+    });
+}
+
 
 // Hàm hiển thị sản phẩm trong giỏ hàng
 function displayCartItems() {
@@ -154,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
         // Gửi thông tin sản phẩm lên máy chủ
-        fetch('/checkout', {
+        fetch('/save_checkout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
