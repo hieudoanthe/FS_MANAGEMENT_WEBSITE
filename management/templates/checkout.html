@@ -169,6 +169,7 @@
                         <div class="navbar-nav ml-auto py-0">
                             <a href="http://127.0.0.1:5000/login" class="nav-item nav-link">Login</a>
                             <a href="http://127.0.0.1:5000/signup" class="nav-item nav-link">Register</a>
+                            <a href="http://127.0.0.1:5000/logout" class="nav-item nav-link">Logout</a>
                         </div>
                     </div>
                 </nav>
@@ -243,12 +244,6 @@
                         <div class="col-md-6 form-group">
                             <label>ZIP Code</label>
                             <input class="form-control" type="text" placeholder="123">
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="newaccount">
-                                <label class="custom-control-label" for="newaccount">Create an account</label>
-                            </div>
                         </div>
                         <div class="col-md-12 form-group">
                             <div class="custom-control custom-checkbox">
@@ -329,7 +324,7 @@
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">$0.00</h5>
+                            <h5 class="font-weight-bold" id="cartTotal">${{ total_price or '0.00' }}</h5>
                         </div>
                     </div>
                 </div>
@@ -463,6 +458,7 @@
                     const productElement = document.getElementById(`product-${productId}`);
                     if (productElement) {
                         productElement.remove();
+                         location.reload();
                     }
                 })
                 .catch((error) => {
