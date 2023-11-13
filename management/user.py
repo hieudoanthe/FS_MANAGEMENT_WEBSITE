@@ -1,7 +1,7 @@
 from re import template
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session, get_flashed_messages, jsonify
 from sqlalchemy.sql.expression import false
-from management.models import User, Note, Product
+from management.models import User, Note, Product, Admin
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from management import db
@@ -97,3 +97,23 @@ def save_products_to_database(products):
         new_product = Product(name=product['name'], total_price=product['price'], user_id=current_user.id)
         db.session.add(new_product)
         db.session.commit()
+
+
+@user.route("/admin_login",methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        adminName = request.form.get("adminName")
+        password = request.form.get("adminPass")
+        admin = Admin.query.filter_by(admin_name=adminName).first()
+        if admin:
+            if check_password_hash(admin.password, password):
+                session.permanent = True
+                login_user(admin,remember=True)
+                flash("Logged is success !",category="success")
+                return redirect(url_for("views.management_dashboard"))
+            else:
+                flash("Password is wrong :)",category="error")
+        else:
+            flash("User doesn't exist !",category="error")
+    messages = get_flashed_messages()
+    return render_template("admin_login.html", user = current_user)

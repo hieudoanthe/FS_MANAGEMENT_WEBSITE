@@ -43,3 +43,11 @@ class Order(db.Model):
     payment_method = db.Column(db.String(50), nullable=False)
     total_price = db.Column(db.Float, nullable=False)
     __tablename__ = 'order'
+class Admin(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    admin_name = db.Column(db.String(150))
+    password = db.Column(db.String(150))
+    def __init__(self, admin_name, password):
+        self.admin_name = admin_name
+        self.password = password
+        __tablename__ = 'admin'

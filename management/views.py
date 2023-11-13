@@ -123,3 +123,11 @@ def submit_order():
     elif payment_method == 'banktransfer':
         # Nếu có trang riêng cho bank transfer, thì thay đổi đường dẫn và template
         return render_template('banktransfer.html', order=new_order)
+
+
+# Admin 
+@views.route('/dashboard')
+@views.route('/management_dashboard')
+@login_required
+def management_dashboard():
+    return render_template('p_dashboard.html')
