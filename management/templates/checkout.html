@@ -200,6 +200,7 @@
 
 
     <!-- Checkout Start -->
+    <form id="checkoutForm" action="/submit_order" method="POST">
     <div class="container-fluid pt-5">
         <div class="row px-xl-5">
             <div class="col-lg-8">
@@ -208,48 +209,35 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>First Name</label>
-                            <input class="form-control" type="text" placeholder="John">
+                            <input class="form-control" type="text" id="fistName" name="firstName" placeholder="Your first name" value="" required autofocus>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Last Name</label>
-                            <input class="form-control" type="text" placeholder="Doe">
+                            <input class="form-control" type="text" id="lastName" name="lastName" placeholder="Your last name" value="" required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>E-mail</label>
-                            <input class="form-control" type="text" placeholder="example@email.com">
+                            <input class="form-control" type="text" id="email" name="email" placeholder="Your email" value="" required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Mobile No</label>
-                            <input class="form-control" type="text" placeholder="+123 456 789">
+                            <input class="form-control" type="text" id="phoneNumber" name="phoneNumber" placeholder="Phone number" value="" required>
                         </div>
                         <div class="col-md-6 form-group">
-                            <label>Address Line 1</label>
-                            <input class="form-control" type="text" placeholder="123 Street">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Address Line 2</label>
-                            <input class="form-control" type="text" placeholder="123 Street">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Country</label>
-                            <select class="custom-select">
-                                <option selected>United States</option>
-                                <option>Afghanistan</option>
-                                <option>Albania</option>
-                                <option>Algeria</option>
-                            </select>
+                            <label>Address</label>
+                            <input class="form-control" type="text" id="address" name="address" placeholder="123 Street" value="" required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>City</label>
-                            <input class="form-control" type="text" placeholder="New York">
+                            <input class="form-control" type="text" id="city" name="city" placeholder="New York" value="" required> 
                         </div>
                         <div class="col-md-6 form-group">
                             <label>State</label>
-                            <input class="form-control" type="text" placeholder="New York">
+                            <input class="form-control" type="text" id="state" name="state" placeholder="New York" value="" required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>ZIP Code</label>
-                            <input class="form-control" type="text" placeholder="123">
+                            <input class="form-control" type="text" id="zipCode" name="zipCode" placeholder="123" value="" required>
                         </div>
                         <div class="col-md-12 form-group">
                             <div class="custom-control custom-checkbox">
@@ -319,10 +307,11 @@
                         <h5 class="font-weight-medium mb-3">Products</h5>
                         {% for product in products %}
                         <div class="d-flex justify-content-between" id="product-{{ product.id }}">
-                            <p>{{ product.name }}</p>
-                            <p>${{ product.total_price }}</p>
-                            <button class="btn btn-sm btn-primary deleteCart" onclick="deleteProduct('{{ product.id }}')"><i
-                                    class="fa fa-times"></i></button>
+                                <p>{{ product.name }}</p>
+                                <p>${{ product.total_price }}
+                                    <button class="btn btn-sm btn-primary deleteCart" onclick="deleteProduct('{{ product.id }}')"><i
+                                            class="fa fa-times"></i></button>
+                                </p>   
                         </div>
                         {% endfor %}
                         <hr class="mt-0">
@@ -330,7 +319,7 @@
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold" id="cartTotal">${{ total_price or '0.00' }}</h5>
+                            <input type="number" name="totalPrice" id="cartTotal" value="{{ total_price or '0.00' }}" readonly>
                         </div>
                     </div>
                 </div>
@@ -340,31 +329,21 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment" id="paypal">
-                                <label class="custom-control-label" for="paypal">Paypal</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment" id="directcheck">
-                                <label class="custom-control-label" for="directcheck">Direct Check</label>
-                            </div>
-                        </div>
-                        <div class="">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment" id="banktransfer">
-                                <label class="custom-control-label" for="banktransfer">Bank Transfer</label>
-                            </div>
+                            <select class="form-control" id="payment_method" name="payment_method">
+                                <option value="paypal">Paypal</option>
+                                <option value="directcheck">Direct Check</option>
+                                <option value="banktransfer">Bank Transfer</option>
+                            </select>
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
-                        <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Place Order</button>
+                        <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3" onclick="submitForm()">Place Order</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    </form>
     <!-- Checkout End -->
 
 
@@ -446,32 +425,7 @@
     <!-- Template Javascript -->
     <script src="../static/js/main.js"></script>
 </body>
-<script>
-    // Hàm xóa sản phẩm từ giỏ hàng và cơ sở dữ liệu
-    function deleteProduct(productId) {
-        const confirmDelete = confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?");
-
-        if (confirmDelete) {
-            // Gửi yêu cầu xóa sản phẩm từ cơ sở dữ liệu
-            fetch(`/checkout/${productId}`, {
-                method: 'DELETE',
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Success:', data);
-
-                    // Xóa sản phẩm khỏi giao diện
-                    const productElement = document.getElementById(`product-${productId}`);
-                    if (productElement) {
-                        productElement.remove();
-                         location.reload();
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
-        }
-    }
+<script src="../static/js/checkout.js">
 </script>
 
 </html>

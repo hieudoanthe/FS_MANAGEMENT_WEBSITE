@@ -30,4 +30,16 @@ class User(db.Model, UserMixin):
         self.email = email
         self.password = password
         self.user_name = user_name
-
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(255))
+    last_name = db.Column(db.String(255))
+    email = db.Column(db.String(255))
+    phone_number = db.Column(db.String(20))
+    address = db.Column(db.String(255))
+    city = db.Column(db.String(100))
+    state = db.Column(db.String(100))
+    zip_code = db.Column(db.String(10))
+    payment_method = db.Column(db.String(50), nullable=False)
+    total_price = db.Column(db.Float, nullable=False)
+    __tablename__ = 'order'

@@ -1,7 +1,7 @@
 from re import template
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session, get_flashed_messages, jsonify
 from sqlalchemy.sql.expression import false
-from management.models import User, Note, Product
+from management.models import User, Note, Product, Order
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from management import db
@@ -82,3 +82,44 @@ def clear_cart_on_cancel():
         # Xử lý lỗi nếu có
         db.session.rollback()
         return jsonify({'success': False, 'message': str(e)})
+
+@views.route('/submit_order', methods=['POST'])
+def submit_order():
+    first_name = request.form.get('firstName')
+    last_name = request.form.get('lastName')
+    email = request.form.get('email')
+    phoneNumber = request.form.get('phoneNumber')
+    address = request.form.get('address')
+    city = request.form.get('city')
+    state = request.form.get('state')
+    zipCode = request.form.get('zipCode')
+    payment_method = request.form.get('payment_method')
+    total_price = float(request.form.get('totalPrice'))
+
+    # Lưu thông tin đơn hàng vào cơ sở dữ liệu
+    new_order = Order(
+        first_name=first_name,
+        last_name=last_name,
+        email = email,
+        phone_number = phoneNumber,
+        payment_method=payment_method,
+        address = address,
+        city = city,
+        state = state,
+        zip_code = zipCode,
+        total_price = total_price
+    )
+
+    db.session.add(new_order)
+    db.session.commit()
+
+    # Thực hiện logic cho việc chọn phương thức thanh toán (Paypal, Direct Check, Bank Transfer)
+    # (Có thể chuyển hướng hoặc hiển thị thông báo thành công tùy thuộc vào yêu cầu của bạn)
+
+    if payment_method == 'paypal':
+        return redirect('https://www.paypal.com/checkoutnow/error?token=EC-6Y751523CE697722J')
+    elif payment_method == 'directcheck':
+        return render_template('directcheck.html', order=new_order)
+    elif payment_method == 'banktransfer':
+        # Nếu có trang riêng cho bank transfer, thì thay đổi đường dẫn và template
+        return render_template('banktransfer.html', order=new_order)
