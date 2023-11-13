@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/p_month.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="../static/js/p.js"></script>
+</head>
+<body>
+    <div class="book">
+        <div class="book_left">
+            <div class="menu">
+                <img src="../static/images/2H&M_LOGO.png" alt="">
+            </div>
+            <div>
+                <li class="menu-item">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle" onclick="toggleDropdown('trangChuDropdown','doanhSoDropdown', 'accountSettingsDropdown')">
+                        <div class="Account Settings" style="color: #4300fa;">Dashboard</div>
+                    </a>
+                    <ul class="menu-sub" id="trangChuDropdown">
+                    </ul>
+                </li>
+            </div>
+            <div class="menu">
+                <li class="menu-item">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle" onclick="toggleDropdown('doanhSoDropdown', 'accountSettingsDropdown','trangChuDropdown')">
+                        <div class="Account Settings">Income</div>
+                    </a>
+                    <ul class="menu-sub" id="doanhSoDropdown">
+                        <li class="menu-item">
+                            <a href="javascript:void(0);" class="menu-link">
+                                <div class="Account"><a href="">Week</a></div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="javascript:void(0);" class="menu-link">
+                                <div class="Account"><a href="">Month</a></div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+            
+            <div class="menu">
+                <li class="menu-item">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle" onclick="toggleDropdown('accountSettingsDropdown', 'doanhSoDropdown','trangChuDropdown')">
+                        <div class="Account Settings">Product</div>
+                    </a>
+                    <ul class="menu-sub" id="accountSettingsDropdown">
+                        <li class="menu-item">
+                            <a href="javascript:void(0);" class="menu-link">
+                                <div class="Account"><a href="">Add</a></div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="javascript:void(0);" class="menu-link">
+                                <div class="Account"><a href="">List</a></div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+            
+        </div>
+        <!-- book_left -->
+        <div class="book_right">
+            <img src="../static/images/hoa2.jpg" alt="">
+            </div>
+            <!--  -->
+
+        </div>
+    </div>
+</body>
+</html>
