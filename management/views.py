@@ -1,11 +1,19 @@
 from re import template
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session, get_flashed_messages, jsonify
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session, get_flashed_messages, jsonify, send_file
 from sqlalchemy.sql.expression import false
 from management.models import User, Note, Product, Order
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from management import db
 from sqlalchemy import func
+from datetime import datetime, timedelta
+from flask import make_response
+import qrcode
+from PIL import Image
+import os
+
+if not os.path.exists('qrcodes'):
+    os.makedirs('qrcodes')
 
 views = Blueprint("views", __name__)
 
@@ -119,12 +127,59 @@ def submit_order():
     if payment_method == 'paypal':
         return redirect('https://www.paypal.com/checkoutnow/error?token=EC-6Y751523CE697722J')
     elif payment_method == 'directcheck':
-        return render_template('directcheck.html', order=new_order)
+        return redirect(url_for('views.show_qr', order_id=new_order.id))
     elif payment_method == 'banktransfer':
         # Nếu có trang riêng cho bank transfer, thì thay đổi đường dẫn và template
-        return render_template('banktransfer.html', order=new_order)
+        return render_template('pay.html', order=new_order)
+# QR Code 
+def generate_qr(order_id,expiration_time_minutes=1):
+    # Truy xuất thông tin từ cơ sở dữ liệu dựa trên order_id
+    order = Order.query.get(order_id)
 
+    if not order:
+        return "Order not found", 404
 
+    # Tính toán thời gian hiện tại và thời gian hết hạn
+    
+    current_time = datetime.utcnow()
+    expiration_time = current_time + timedelta(minutes=expiration_time_minutes)
+
+    # Tạo nội dung mã QR từ thông tin trong bảng Order
+    qr_content = f"Order success!\nThank you {order.first_name}{order.last_name}\nOrders for ${order.total_price} will be delivered to you soon\nOrder tracking:\n'http:/127.0.0.1:5000/home'"
+
+    # Tạo mã QR code
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(qr_content)
+    qr.make(fit=True)
+
+    # Tạo ảnh QR code bằng thư viện PIL
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    # Lưu ảnh hoặc hiển thị
+    if current_time <= expiration_time:
+        img_path = os.path.abspath(f"qrcodes/order_{order.id}.png")
+        img.save(img_path)
+
+        # Hiển thị ảnh (có thể sử dụng send_file để hiển thị trực tiếp)
+        response = make_response(send_file(img_path, mimetype='image/png'))
+
+        # Ngăn chặn cache bằng cách thêm các header
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+
+        return response
+    else:
+        return "QR Code has expired", 400
+
+@views.route('/show_qr/<int:order_id>')
+def show_qr(order_id):
+    return generate_qr(order_id)
 # Admin 
 @views.route('/dashboard')
 @views.route('/management_dashboard')
@@ -143,3 +198,4 @@ def management_week():
 @views.route('/management_list')
 def management_list():
     return render_template('admin_list.html')
+
