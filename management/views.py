@@ -1,7 +1,7 @@
 from re import template
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session, get_flashed_messages, jsonify, send_file
 from sqlalchemy.sql.expression import false
-from management.models import User, Note, Product, Order
+from management.models import User, Note, Product, Order, Amin_addProduct
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from management import db
@@ -11,6 +11,7 @@ from flask import make_response
 import qrcode
 from PIL import Image
 import os
+from io import BytesIO
 
 if not os.path.exists('qrcodes'):
     os.makedirs('qrcodes')
@@ -189,8 +190,25 @@ def management_dashboard():
 @views.route('/management_month')
 def management_month():
     return render_template('admin_month.html')
-@views.route('/management_add')
+@views.route('/management_add', methods=['GET', 'POST'])
 def management_add():
+    if request.method == 'POST':
+        product_name = request.form['productName']
+        quantity = request.form['quantity']
+        price = request.form['price']
+        image = request.files['image']
+
+        new_product = Amin_addProduct(productName=product_name, quantity=quantity, price=price)
+
+        # Lưu ảnh và cập nhật tên file trong cơ sở dữ liệu
+        if image:
+            image.save('E:/Mew/Code/PYTHON/FS_MANAGEMENT_WEBSITE/management/imgdatabase/{image.filename}')
+            new_product.image = image.filename
+
+        db.session.add(new_product)
+        db.session.commit()
+        flash("Add to success",category="success")
+    products = Amin_addProduct.query.with_entities(Amin_addProduct.productName.label('productName')).all()
     return render_template('admin_add.html')
 @views.route('/management_week')
 def management_week():
@@ -199,3 +217,4 @@ def management_week():
 def management_list():
     return render_template('admin_list.html')
 
+    

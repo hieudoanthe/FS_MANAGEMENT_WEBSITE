@@ -4,7 +4,7 @@ from sqlalchemy.sql import func
 from sqlalchemy import DECIMAL
 from sqlalchemy.orm import relationship
 from datetime import datetime 
-
+from sqlalchemy import LargeBinary
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.String(10000))
@@ -51,3 +51,13 @@ class Admin(db.Model, UserMixin):
         self.admin_name = admin_name
         self.password = password
         __tablename__ = 'admin'
+
+class Amin_addProduct(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    productName = db.Column(db.String(255), nullable=False, name='productName') 
+    quantity = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    image = db.Column(db.String(255))
+
+    def __repr__(self):
+        return f'<Product {self.productName}>'
