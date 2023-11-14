@@ -1,1 +1,37 @@
-# FS_MANAGEMENT_WEBSITE
+# Thông tin dự án
+
+## Tên dự án:
+
+- **FashionHub - Website Bán Thời Trang (FS_MANAGEMENT_WEBSITE)**
+
+## Mô tả:
+
+- _FashionHub_ là một ứng dụng web giúp người dùng thỏa sức mua sắm và quản lý sản phẩm thời trang.
+- Người dùng có thể thêm sản phẩm vào giỏ hàng, xóa sản phẩm,...
+- Về phần quản lý: Admin là người điều khiển.
+- Ứng dụng web cung cấp một giao diện đơn giản và thân thiện, giúp người dùng dễ dàng thao tác và theo dõi xu hướng thời trang mới nhất.
+
+## Chức năng:
+
+- Thêm sản phẩm mới vào giỏ hàng.
+- Xóa sản phẩm khỏi giỏ hàng.
+- Tìm kiếm sản phẩm theo tên, thương hiệu...
+- Lưu trữ thông tin đơn hàng và lịch sử mua sắm của người dùng.
+
+## Công nghệ và công cụ sử dụng:
+
+- Ngôn ngữ lập trình: JavaScript, Python
+- Framework: Flask
+- Giao diện người dùng: HTML, CSS
+- Quản lý phiên bản: Git
+- Cơ sở dữ liệu: MySQL Workbench
+
+## Công cụ phát triển:
+
+- Visual Studio Code
+
+## Thành viên nhóm:
+
+- Lê Việt Hòa
+- Đoàn Thế Hiếu
+- Nguyễn Văn Mạnh
