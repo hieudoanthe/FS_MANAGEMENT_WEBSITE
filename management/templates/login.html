@@ -43,7 +43,7 @@
                     </a>
                 </div>
                 <p class="account-text">Don't have an account? <a href="#" id="sign-up-btn2">Sign up</a></p>
-                <div style="margin-top: 40px; text-align: center;">
+                <div style="margin-top: 40px; text-align: center; font-size: 16px;">
                     {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                     {% for cat, mess in messages %}
@@ -78,8 +78,9 @@
             <div class="panel right-panel">
                 <div class="content">
                     <h3>New to Brand?</h3>
+                    <img style="max-width: 100%; width: 600px; height: 200px; object-fit: cover; margin: 20px 0;" src="../static/images/2H&M_LOGIN.gif" alt="">
                     <p>Celebrate being 'New to Brand' with 2H&M! Discover our unique fashion offerings and join our style community today.</p>
-                    <button class="btn" id="sign-up-btn"><a href="http://127.0.0.1:5000/signup">Sign up</a></button>
+                    <button class="btn" id="sign-up-btn"><a style="color: white;" href="http://127.0.0.1:5000/signup">Sign up</a></button>
                 </div>
             </div>
         </div>

@@ -130,4 +130,16 @@ def submit_order():
 @views.route('/management_dashboard')
 @login_required
 def management_dashboard():
-    return render_template('p_dashboard.html')
+    return render_template('admin_dashboard.html')
+@views.route('/management_month')
+def management_month():
+    return render_template('admin_month.html')
+@views.route('/management_add')
+def management_add():
+    return render_template('admin_add.html')
+@views.route('/management_week')
+def management_week():
+    return render_template('admin_week.html')
+@views.route('/management_list')
+def management_list():
+    return render_template('admin_list.html')

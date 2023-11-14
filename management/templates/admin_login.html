@@ -28,7 +28,7 @@
                         placeholder="Enter password..." />
                 </div>
                 <input type="submit" value="Login" class="btn">
-                <div style="margin-top: 40px; text-align: center;">
+                <div style="margin-top: 40px; text-align: center; font-size: 16px;">
                     {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                     {% for cat, mess in messages %}
@@ -62,10 +62,11 @@
             </div>
             <div class="panel right-panel">
                 <div class="content">
-                    <h3>New to Brand?</h3>
-                    <p>Celebrate being 'New to Brand' with 2H&M! Discover our unique fashion offerings and join our
-                        style community today.</p>
-                    <button class="btn" id="sign-up-btn"><a href="http://127.0.0.1:5000/signup">Sign up</a></button>
+                    <h3>H2&M</h3>
+                    <img style="max-width: 100%; width: 600px; height: 200px; object-fit: cover; margin: 20px 0;"
+                        src="../static/images/2H&M.gif" alt="">
+                    <p>The 2H&M platform offers streamlined management and statistics functionalities for effective business operations.</p>
+                    <button class="btn" id="sign-up-btn"><a style="color: white;" href="http://127.0.0.1:5000/home">Shop</a></button>
                 </div>
             </div>
         </div>
