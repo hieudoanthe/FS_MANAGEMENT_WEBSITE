@@ -145,7 +145,7 @@ def generate_qr(order_id,expiration_time_minutes=1):
     expiration_time = current_time + timedelta(minutes=expiration_time_minutes)
 
     # Tạo nội dung mã QR từ thông tin trong bảng Order
-    qr_content = f"Order success!\nThank you {order.first_name}{order.last_name}\nOrders for ${order.total_price} will be delivered to you soon\nOrder tracking:\n'http:/127.0.0.1:5000/home'"
+    qr_content = f"Order success!\nThank you {order.first_name} {order.last_name}\nOrders for ${order.total_price} will be delivered to you soon\nOrder tracking:\n'http:/127.0.0.1:5000/home'"
 
     # Tạo mã QR code
     qr = qrcode.QRCode(
