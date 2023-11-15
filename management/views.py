@@ -243,4 +243,6 @@ def management_week():
     return render_template('admin_week.html')
 @views.route('/management_list')
 def management_list():
-    return render_template('admin_list.html')
+    # Lấy danh sách các admin từ cơ sở dữ liệu
+    products = Amin_addProduct.query.all()
+    return render_template('admin_list.html', products=products)
