@@ -38,7 +38,7 @@
                         </li>
                         <li class="menu-item">
                             <a href="javascript:void(0);" class="menu-link">
-                                <div class="Account"><a href="http://127.0.0.1:5000/management_month">Month</a></div>
+                                <div class="Account"><a href="http://127.0.0.1:5000/management_month">Approve orders</a></div>
                             </a>
                         </li>
                     </ul>
@@ -68,10 +68,84 @@
         
         </div>
         <!-- book_left -->
+        <style>
+            table {
+            border-collapse: collapse; /* Ẩn đường kẻ giữa các ô */
+            width: 100%;
+            }
+
+            th, td {
+            border: 1px solid #ddd; /* Thiết lập đường kẻ cho các ô */
+            padding: 8px; /* Thêm padding để tạo khoảng cách */
+            text-align: left; /* Căn lề văn bản */
+            }
+
+            /* Tùy chọn: Hiệu ứng khi di chuột qua các hàng */
+            tr:hover {
+            background-color: #f5f5f5; /* Màu nền khi di chuột qua */
+            }
+            .approved {
+            background-color: #4CAF50; /* Màu xanh cho hàng được phê duyệt */
+            color: #fff; /* Màu văn bản trắng */
+            }
+
+            .rejected {
+            background-color: #FF6347; /* Màu đỏ cho hàng bị từ chối */
+            color: #fff; /* Màu văn bản trắng */
+            }
+        </style>
         <div class="book_right">
-            <img src="../static/images/hoa2.jpg" alt="">
+            <h1>Manage Orders</h1>
+            <table border="1">
+                <tr>
+                    <th>Action</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Phone Number</th>
+                    <th>Total Price</th>
+                </tr>
+                {% for order in orders %}
+                <tr>
+                    <td id="color">
+                        <a  href="#" onclick="changeColor('like')" id="like">Approve</a>
+                        <a style="margin-left: 20px;" href="#" onclick="changeColor('dislike')" id="dis">Reject</a>
+                        <a style="margin-left: 20px;" href="{{ url_for('views.delete_order', order_id=order.id) }}">Delete</a>
+                    </td>
+                    <td>{{ order.first_name }}</td>
+                    <td>{{ order.last_name }}</td>
+                    <td>{{ order.phone_number }}</td>
+                    <td>{{ order.total_price }}</td>
+                </tr>
+                {% endfor %}
+            </table>
             <!--  -->
         </div>
     </div>
 </body>
+<script>
+    function changeColor(string) {
+        if (string === 'like') {
+            document.getElementById("like").style.color = "#4CAF50";
+            document.getElementById("dis").style.color = "#000";
+            localStorage.setItem('selectedColor', 'like'); // Lưu màu sắc đã chọn vào localStorage
+        } else if (string === 'dislike') {
+            document.getElementById("dis").style.color = "#FF6347";
+            document.getElementById("like").style.color = "#000";
+            localStorage.setItem('selectedColor', 'dislike'); // Lưu màu sắc đã chọn vào localStorage
+        }
+    }
+
+    // Kiểm tra nếu có màu sắc đã chọn từ trước và áp dụng nó khi trang được load
+    document.addEventListener('DOMContentLoaded', function () {
+        var selectedColor = localStorage.getItem('selectedColor');
+        if (selectedColor === 'like') {
+            document.getElementById("like").style.color = "#4CAF50";
+            document.getElementById("dis").style.color = "#000";
+        } else if (selectedColor === 'dislike') {
+            document.getElementById("dis").style.color = "#FF6347";
+            document.getElementById("like").style.color = "#000";
+        }
+    });
+</script>
+
 </html>

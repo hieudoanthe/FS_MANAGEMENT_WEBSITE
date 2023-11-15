@@ -189,7 +189,35 @@ def management_dashboard():
     return render_template('admin_dashboard.html')
 @views.route('/management_month')
 def management_month():
-    return render_template('admin_month.html')
+    # Sử dụng join để kết hợp dữ liệu từ các bảng và chỉ định điều kiện kết hợp
+    orders = (
+        db.session.query(Order)
+        .with_entities(Order.id, Order.first_name, Order.last_name, Order.phone_number, Order.total_price)
+        .all()
+    )
+
+    return render_template('admin_month.html', orders=orders)
+
+# Route để xử lý sự kiện phê duyệt
+@views.route('/approve_order/<int:order_id>')
+def approve_order(order_id):
+    # Xử lý logic phê duyệt ở đây (ví dụ: cập nhật trạng thái đơn hàng)
+    return redirect(url_for('views.management_month'))
+
+# Route để xử lý sự kiện từ chối
+@views.route('/reject_order/<int:order_id>')
+def reject_order(order_id):
+    # Xử lý logic từ chối ở đây (ví dụ: cập nhật trạng thái đơn hàng)
+    return redirect(url_for('views.management_month'))
+
+# Route để xử lý sự kiện xóa
+@views.route('/delete_order/<int:order_id>')
+def delete_order(order_id):
+    # Xử lý logic xóa ở đây
+    order_to_delete = Order.query.get(order_id)
+    db.session.delete(order_to_delete)
+    db.session.commit()
+    return redirect(url_for('views.management_month'))
 @views.route('/management_add', methods=['GET', 'POST'])
 def management_add():
     if request.method == 'POST':
@@ -216,5 +244,3 @@ def management_week():
 @views.route('/management_list')
 def management_list():
     return render_template('admin_list.html')
-
-    
