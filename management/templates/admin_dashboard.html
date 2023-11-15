@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>2H&M | Dashboard</title>
     <link rel="stylesheet" href="../static/css/p_dashboard.css">
+    <link rel="stylesheet" href="../static/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <div class="book">
         <div class="book_left">
             <div class="menu">
-                <img src="../static/images/2H&M.gif" alt="">
+                <img style="width: 100%;" src="../static/images/2H&M.gif" alt="">
             </div>
             <div>
                 <li class="menu-item">
-                    <a href="http://127.0.0.1:5000/dashboard" class="menu-link menu-toggle" onclick="toggleDropdown('trangChuDropdown','doanhSoDropdown', 'accountSettingsDropdown')">
-                        <div class="Account Settings" style="color: #4300fa;">Dashboard</div>
+                    <a href="http://127.0.0.1:5000/dashboard" class="menu-link menu-toggle"
+                        onclick="toggleDropdown('trangChuDropdown','doanhSoDropdown', 'accountSettingsDropdown')">
+                        <div class="Account Settings dash"
+                            style="text-transform: uppercase; font-size: 14px; padding-bottom: 10px; font-weight: bold;">
+                            Dashboard</div>
                     </a>
                     <ul class="menu-sub" id="trangChuDropdown">
                     </ul>
@@ -24,63 +28,75 @@
             </div>
             <div class="menu">
                 <li class="menu-item">
-                    <a href="#" class="menu-link menu-toggle" onclick="toggleDropdown('doanhSoDropdown', 'accountSettingsDropdown','trangChuDropdown')">
-                        <div class="Account Settings">Income</div>
+                    <a href="#" class="menu-link menu-toggle"
+                        onclick="toggleDropdown('doanhSoDropdown', 'accountSettingsDropdown','trangChuDropdown')">
+                        <div style="text-transform: uppercase; font-size: 14px; padding-bottom: 10px; font-weight: bold;"
+                            class="Account Settings">Revenue management</div>
                     </a>
-                    <ul class="menu-sub" id="doanhSoDropdown">
+                    <ul class="menu-sub bg-cl" id="doanhSoDropdown">
                         <li class="menu-item">
                             <a href="javascript:void(0);" class="menu-link">
-                                <div class="Account"><a href="http://127.0.0.1:5000/management_week">Week</a></div>
+                                <div style="margin-left: -50px; margin-top: -15px;" class="Account"><a
+                                        style="font-size: 12px; font-weight: bold;"
+                                        href="http://127.0.0.1:5000/management_week"><i
+                                            style="font-size: 12px; margin-right: 10px;"
+                                            class="fa-solid fa-money-check-dollar"></i>INCOME</a></div>
                             </a>
                         </li>
                         <li class="menu-item">
                             <a href="javascript:void(0);" class="menu-link">
-                                <div class="Account"><a href="http://127.0.0.1:5000/management_month">Month</a></div>
+                                <div style="margin-left: -50px; margin-top: -15px;" class="Account"><a
+                                        style="font-size: 12px; font-weight: bold;"
+                                        href="http://127.0.0.1:5000/management_month"><i
+                                            style="font-size: 15px; margin-right: 10px;"
+                                            class="fa-solid fa-person-circle-check"></i>APPROVE</a></div>
                             </a>
                         </li>
                     </ul>
                 </li>
             </div>
-            
+        
             <div class="menu">
                 <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle" onclick="toggleDropdown('accountSettingsDropdown', 'doanhSoDropdown','trangChuDropdown')">
-                        <div class="Account Settings">Product</div>
+                    <a href="javascript:void(0);" class="menu-link menu-toggle"
+                        onclick="toggleDropdown('accountSettingsDropdown', 'doanhSoDropdown','trangChuDropdown')">
+                        <div class="Account Settings"
+                            style="text-transform: uppercase; font-size: 14px; padding-bottom: 10px; font-weight: bold;">Manage
+                            Products</div>
                     </a>
-                    <ul class="menu-sub" id="accountSettingsDropdown">
+                    <ul class="menu-sub bg-cl" id="accountSettingsDropdown">
                         <li class="menu-item">
                             <a href="javascript:void(0);" class="menu-link">
-                                <div class="Account"><a href="http://127.0.0.1:5000/management_add">Add</a></div>
+                                <div style="margin-left: -50px; margin-top: -15px;" class="Account"><a
+                                        style="font-size: 12px; font-weight: bold;"
+                                        href="http://127.0.0.1:5000/management_add"><i
+                                            style="font-size: 12px; margin-right: 6px;"
+                                            class="fa-brands fa-product-hunt"></i>ADD PRODUCT</a></div>
                             </a>
                         </li>
                         <li class="menu-item">
                             <a href="javascript:void(0);" class="menu-link">
-                                <div class="Account"><a href="http://127.0.0.1:5000/management_list">List</a></div>
+                                <div style="margin-left: -50px; margin-top: -15px;" class="Account"><a
+                                        style="font-size: 12px; font-weight: bold;"
+                                        href="http://127.0.0.1:5000/management_list"><i
+                                            style="font-size: 12px; margin-right: 6px;"
+                                            class="fa-solid fa-clipboard-list"></i>LIST PRODUCT</a></div>
                             </a>
                         </li>
                     </ul>
                 </li>
             </div>
-            
         </div>
         <!-- book_left -->
         <div class="book_right">
-            <div class="book_right-main1">
-                <div class="main1-comment">
-                    <div class="main1-comment_1">
-                        <h1>Manager &amp; Statistics</h1>
+            <div class="container-fluid bg-secondary mb-5" style="height: 150px; margin-top: -20px;">
+                <div class="d-flex flex-column align-items-center justify-content-center" style="height: 150px;">
+                    <h1 style="color: #CCCC99;" class="font-weight-semi-bold text-uppercase mb-3">Manager &amp; Statistics</h1>
+                    <div class="d-inline-flex">
+                        <p class="m-0"><a href="http://127.0.0.1:5000/home">2HM-Shop</a></p>
+                        <p class="m-0 px-2">-</p>
+                        <p class="m-0">The 2H&M platform offers streamlined management and statistics functionalities for effective business operations.</p>
                     </div>
-                    <div class="main1-comment_2">
-                        <span>
-                            The 2H&M platform offers streamlined management and statistics functionalities for effective business operations.
-                        </span>
-                    </div>
-                    <div class="main1-comment_3">
-                        <a href="" >View badges</a>
-                    </div>
-                </div>
-                <div class="main1-img">
-                        <img src="../static/images/hoa.jpg" alt="">
                 </div>
             </div>
             <div class="bieudo">
