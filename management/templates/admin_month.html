@@ -133,18 +133,37 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Phone Number</th>
+                    <th>Addres</th>
                     <th>Total Price</th>
                 </tr>
+                <style>
+                    .like {
+                        color: #444;
+                    }
+                
+                    .dis {
+                        color: #444;
+                    }
+                
+                    .like.clicked {
+                        color: #4CAF50;
+                    }
+                
+                    .dis.clicked {
+                        color: #FF6347;
+                    }
+                </style>
                 {% for order in orders %}
                 <tr>
-                    <td id="color">
-                        <a  href="#" onclick="changeColor('like')" id="like"><i class="fa-solid fa-circle-check"></i></a>
-                        <a style="margin-left: 20px;" href="#" onclick="changeColor('dislike')" id="dis"><i style="font-size: 16px;" class="fa-solid fa-circle-xmark"></i></a>
+                    <td>
+                        <a href="#" onclick="changeColor('like', this)" class="like"><i class="fa-solid fa-circle-check"></i></a>
+                        <a style="margin-left: 20px;" href="#" onclick="changeColor('dislike', this)" class="dis"><i style="font-size: 16px;" class="fa-solid fa-circle-xmark"></i></a>
                         <a style="margin-left: 20px;" href="{{ url_for('views.delete_order', order_id=order.id) }}"><i style="font-size: 16px;" class="fa-solid fa-trash-can"></i></a>
                     </td>
                     <td>{{ order.first_name }}</td>
                     <td>{{ order.last_name }}</td>
                     <td>{{ order.phone_number }}</td>
+                    <td>{{ order.address }}</td>
                     <td>{{ order.total_price }}</td>
                 </tr>
                 {% endfor %}
@@ -157,29 +176,22 @@
     </div>
 </body>
 <script>
-    function changeColor(string) {
-        if (string === 'like') {
-            document.getElementById("like").style.color = "#4CAF50";
-            document.getElementById("dis").style.color = "#444";
-            localStorage.setItem('selectedColor', 'like'); // Lưu màu sắc đã chọn vào localStorage
-        } else if (string === 'dislike') {
-            document.getElementById("dis").style.color = "#FF6347";
-            document.getElementById("like").style.color = "#444";
-            localStorage.setItem('selectedColor', 'dislike'); // Lưu màu sắc đã chọn vào localStorage
+    function changeColor(type, element) {
+        // Kiểm tra xem nút đang được click là like hay dislike
+        if (type === 'like') {
+            // Đảm bảo nút dislike không được click cùng lúc
+            element.nextElementSibling.classList.remove('clicked');
+
+            // Thêm hoặc xoá lớp 'clicked' cho nút like
+            element.classList.toggle('clicked');
+        } else if (type === 'dislike') {
+            // Đảm bảo nút like không được click cùng lúc
+            element.previousElementSibling.classList.remove('clicked');
+
+            // Thêm hoặc xoá lớp 'clicked' cho nút dislike
+            element.classList.toggle('clicked');
         }
     }
-
-    // Kiểm tra nếu có màu sắc đã chọn từ trước và áp dụng nó khi trang được load
-    document.addEventListener('DOMContentLoaded', function () {
-        var selectedColor = localStorage.getItem('selectedColor');
-        if (selectedColor === 'like') {
-            document.getElementById("like").style.color = "#4CAF50";
-            document.getElementById("dis").style.color = "#444";
-        } else if (selectedColor === 'dislike') {
-            document.getElementById("dis").style.color = "#FF6347";
-            document.getElementById("like").style.color = "#444";
-        }
-    });
 </script>
 <script src="../static/js/p.js"></script>
 </html>

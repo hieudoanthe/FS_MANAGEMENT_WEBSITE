@@ -131,7 +131,7 @@ def submit_order():
         return redirect(url_for('views.show_qr', order_id=new_order.id))
     elif payment_method == 'banktransfer':
         # Nếu có trang riêng cho bank transfer, thì thay đổi đường dẫn và template
-        return render_template('pay.html', order=new_order)
+        return redirect('https://pay.vnpay.vn/Transaction/PaymentMethod.html?token=0208c031e98646c29e936b385c26dd88')
 # QR Code 
 def generate_qr(order_id,expiration_time_minutes=1):
     # Truy xuất thông tin từ cơ sở dữ liệu dựa trên order_id
@@ -189,10 +189,9 @@ def management_dashboard():
     return render_template('admin_dashboard.html')
 @views.route('/management_month')
 def management_month():
-    # Sử dụng join để kết hợp dữ liệu từ các bảng và chỉ định điều kiện kết hợp
     orders = (
         db.session.query(Order)
-        .with_entities(Order.id, Order.first_name, Order.last_name, Order.phone_number, Order.total_price)
+        .with_entities(Order.id, Order.first_name, Order.last_name, Order.phone_number, Order.address,  Order.total_price)
         .all()
     )
 
@@ -210,7 +209,7 @@ def reject_order(order_id):
     # Xử lý logic từ chối ở đây (ví dụ: cập nhật trạng thái đơn hàng)
     return redirect(url_for('views.management_month'))
 
-# Route để xử lý sự kiện xóa
+# Route để xử lý sự kiện xóa khách hàng đặt hàng
 @views.route('/delete_order/<int:order_id>')
 def delete_order(order_id):
     # Xử lý logic xóa ở đây
@@ -226,6 +225,13 @@ def management_add():
         price = request.form['price']
         image = request.files['image']
 
+        # Kiểm tra xem tên sản phẩm đã tồn tại chưa
+        existing_product = Amin_addProduct.query.filter_by(productName=product_name).first()
+
+        if existing_product:
+            flash("Product with the same name already exists in the database", category="error")
+            return redirect(url_for('views.management_add'))
+
         new_product = Amin_addProduct(productName=product_name, quantity=quantity, price=price)
 
         # Lưu ảnh và cập nhật tên file trong cơ sở dữ liệu
@@ -235,7 +241,8 @@ def management_add():
 
         db.session.add(new_product)
         db.session.commit()
-        flash("Add to success",category="success")
+        flash("Add to success", category="success")
+
     products = Amin_addProduct.query.with_entities(Amin_addProduct.productName.label('productName')).all()
     return render_template('admin_add.html')
 @views.route('/management_week')
@@ -245,4 +252,37 @@ def management_week():
 def management_list():
     # Lấy danh sách các admin từ cơ sở dữ liệu
     products = Amin_addProduct.query.all()
+    return render_template('admin_list.html', products=products)
+# Xóa sản phẩm trong danh sách sản phẩm được quản lí 
+@views.route('/delete_product/<int:product_id>')
+def delete_product(product_id):
+    # Xử lý logic xóa ở đây
+    product_to_delete = Amin_addProduct.query.get(product_id)
+    db.session.delete(product_to_delete)
+    db.session.commit()
+    return redirect(url_for('views.management_list'))
+# Sửa thông tin sản phẩm
+@views.route('/update_product/<int:product_id>', methods=['POST'])
+def update_product(product_id):
+    # Tìm sản phẩm cần cập nhật từ cơ sở dữ liệu
+    product = Amin_addProduct.query.get_or_404(product_id)
+
+    # Cập nhật thông tin sản phẩm từ dữ liệu gửi từ phía client
+    product.productName = request.json.get('productName', product.productName)
+    product.price = request.json.get('price', product.price)
+    product.quantity = request.json.get('quantity', product.quantity)
+
+    # Lưu thay đổi vào cơ sở dữ liệu
+    db.session.commit()
+
+    # Trả về thông báo cập nhật thành công (hoặc có thể trả về JSON khác tùy ý)
+    return jsonify({'message': 'Product updated successfully'})
+# Tìm kiếm sản phẩm
+@views.route('/search_products', methods=['POST'])
+def search_products():
+    search_term = request.form.get('search_term', '')
+    
+    # Thực hiện truy vấn cơ sở dữ liệu để lấy danh sách sản phẩm thỏa mãn điều kiện tìm kiếm
+    products = Amin_addProduct.query.filter(Amin_addProduct.productName.ilike(f'%{search_term}%')).all()
+
     return render_template('admin_list.html', products=products)
