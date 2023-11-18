@@ -247,7 +247,16 @@ def management_add():
     return render_template('admin_add.html')
 @views.route('/management_week')
 def management_week():
-    return render_template('admin_week.html')
+    # Truy vấn tất cả các sản phẩm từ cơ sở dữ liệu
+    all_products = Amin_addProduct.query.all()
+    all_orders = Order.query.all()
+
+    # Tính tổng số tiền
+    total_price = sum(float(product.quantity) * float(product.price) for product in all_products)
+    total_price_order = sum(order.total_price for order in all_orders)
+
+    # Truyền giá trị total_price sang template admin_week.html
+    return render_template('admin_week.html', total_price=total_price,total_price_order=total_price_order)
 @views.route('/management_list')
 def management_list():
     # Lấy danh sách các admin từ cơ sở dữ liệu
