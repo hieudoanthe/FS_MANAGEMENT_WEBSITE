@@ -1,6 +1,6 @@
 // Hàm xóa sản phẩm từ giỏ hàng và cơ sở dữ liệu
     function deleteProduct(productId) {
-        const confirmDelete = confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?");
+        const confirmDelete = confirm("Are you sure you want to remove this product from your cart?");
 
         if (confirmDelete) {
             // Gửi yêu cầu xóa sản phẩm từ cơ sở dữ liệu

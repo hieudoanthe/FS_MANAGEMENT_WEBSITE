@@ -28,7 +28,7 @@ def login():
                 # Nếu không có trang 'next', chuyển hướng đến trang chính (home)
                 return redirect(url_for("views.home"))
             else:
-                flash("Password is wrong :)", category="error")
+                flash("Password is wrong !", category="error")
         else:
             flash("User doesn't exist!", category="error")
     messages = get_flashed_messages()
